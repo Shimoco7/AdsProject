@@ -175,26 +175,47 @@ app.get('/getActiveUsers',function(req,res){
 
 
 app.post('/DeleteAd',function(req,res){
-db.collection('Ads').deleteOne({name:req.body.name},(err,result)=>{
-  if(result.deletedCount==0)
-    res.send("No advertisment has been deleted");
-  else{
-    res.send("advertisment has been deleted successfully");
-  }
+  db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
+    if(result){
+      db.collection('Ads').deleteOne({name:req.body.name},(err,result)=>{
+        if(result.deletedCount==0)
+          res.send("No advertisment has been deleted");
+        else{
+          res.send("advertisment has been deleted successfully");
+        }
+        });
+    }
+    else{
+      res.send("Not Connected");
+    }
   });
 });
 
 
 app.post('/AddAd',function(req,res){
-   db.collection('Ads').insertOne(req.body,(err,result)=>{
-    if(result!=undefined)
-    res.send(JSON.stringify(result));
-    });
+  db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
+    if(result){
+      db.collection('Ads').insertOne(req.body,(err,result)=>{
+        if(result!=undefined)
+        res.send(JSON.stringify(result));
+        });
+    }
+    else{
+      res.send("Not Connected");
+    }
+  });
   });
 
   app.post('/EditAd',function(req,res){
-    db.collection('Ads').updateOne({name: req.body.name}, {$set: req.body}, function(err, result){
-      res.send(JSON.stringify(req.body));
+    db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
+      if(result){
+        db.collection('Ads').updateOne({name: req.body.name}, {$set: req.body}, function(err, result){
+          res.send(JSON.stringify(req.body));
+        });
+      }
+      else{
+        res.send("Not Connected");
+      }
     });
 
    });
@@ -262,8 +283,8 @@ app.get('/getAdsByType', function (req, res){
 //Users and Admin Management
 io.on('connection', (socket) => {
   var str = String(socket.handshake.headers.referer);
-  str.toLowerCase();
-  if(str.includes('Admin')){
+  str = str.toLowerCase();
+  if(str.includes('admin')){
     console.log("An admin has been connected");
     socket.on('disconnect',function(res){
       console.log("An admin has been disconnected");
@@ -274,35 +295,26 @@ io.on('connection', (socket) => {
     var clientId = parseInt(str);
     var screenId = clientId % 3;
     var query = {client : clientId};
-    db.collection("InActiveUsers").deleteOne(query).then((result)=>{
-      if(result.deletedCount>0){
-        console.log(clientId);
-        socket.broadcast.emit('UpdateOnDatabaseInActiveDelete',clientId);
-      }
-    });
+    db.collection("InActiveUsers").deleteOne(query);
 
     var d=new Date(Date.now());
     var user = { uid:socket.id,client: clientId, screen: screenId,time:d.toString()};
     db.collection("ActiveUsers").insertOne(user, function(err, res) {
     if (err) throw err;
       console.log("A new client has connected and been added to 'ActiveUsers' collection");
-      socket.broadcast.emit('UpdateOnDatabaseActive');
+      socket.broadcast.emit('UpdateOnDatabaseActive',user.client);
     });
-    socket.on('disconnect',function(res){
+    socket.on('disconnect',function(r){
       db.collection('ActiveUsers').findOne({uid:socket.id}, (err,res) => {
         if(err) throw err;
         var d=new Date(Date.now());
-        var disconnectedUser = {uid:res.uid,client:res.client,screen:res.screen,disconnectionTime:d.toString()};
-        db.collection('InActiveUsers').insertOne(disconnectedUser,(err,res)=>{
-          if(res){
-            socket.broadcast.emit('UpdateOnDatabaseInActive');
+        var disconnectedUser = {uid:socket.id,client:res.client,screen:res.screen,disconnectionTime:d.toString()};
+        db.collection('InActiveUsers').insertOne(disconnectedUser,(err,result)=>{
+          if(result){
+            socket.broadcast.emit('UpdateOnDatabaseInActive',disconnectedUser.client);
           }
         });
-        db.collection("ActiveUsers").deleteOne({uid:socket.id}).then((result)=>{
-          if(result.deletedCount>0){
-            socket.broadcast.emit('UpdateOnDatabaseActiveDelete',res.client);
-          }
-        });
+        db.collection("ActiveUsers").deleteOne({uid:socket.id});
         console.log("A client has disconnected and been removed from 'ActiveUsers' collection");
       });
     });

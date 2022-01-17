@@ -92,7 +92,7 @@ $('#updateAdminForm').submit(function (event) {
         success: function (res) {
             if (res === "Password Updated Successfully") {
                 $('#formTitle').attr("style", "color: green;");
-                $('#formTitle').text("Password has been changed successfully");
+                $('#formTitle').text("Username and/or Password have been changed successfully");
                 setTimeout(() => {
                     $('#formTitle').attr("style", "color: black;");
                     $('#formTitle').text("Change Username and Password");
@@ -109,7 +109,7 @@ $('#updateAdminForm').submit(function (event) {
 
 });
 
-function updateAdminPanelActive() {
+function updateAdminPanelActive(data) {
     $.ajax({
         url: '/getActiveUsers',
         type: 'GET',
@@ -117,28 +117,23 @@ function updateAdminPanelActive() {
             console.log(res);
             var json = JSON.parse(res);
             fillUsersCells(json, "ActiveUsers");
+            deleteUserFromTable(data, "InActiveUsers");
         }
     });
 }
 
-function updateAdminPanelInActive() {
+function updateAdminPanelInActive(data) {
     $.ajax({
         url: '/getInActiveUsers',
         type: 'GET',
         success: function (res) {
             var json = JSON.parse(res);
             fillUsersCells(json, "InActiveUsers");
+            deleteUserFromTable(data, "ActiveUsers");
         }
     });
 }
 
-function updateAdminPanelActiveDelete(data) {
-    deleteUserFromTable(data, "ActiveUsers");
-}
-
-function updateAdminPanelInActiveDelete(data) {
-    deleteUserFromTable(data, "InActiveUsers");
-}
 
 function deleteUserFromTable(clientId, collection) {
     var table = document.getElementById(collection);
@@ -174,6 +169,7 @@ function fillUsersCells(json, collection) {
     }
 }
 
+
 function deleteAd() {
     var table = document.getElementById("Ads");
     if (table.tBodies[0].rows.length < 2) {
@@ -194,6 +190,11 @@ function deleteAd() {
         contentType: 'application/json',
         data: JSON.stringify({ 'name': adName }),
         success: function (res) {
+            console.log(res);
+            if(res==="Not Connected"){
+                location.reload();
+                return;
+            }
             if (res === "No advertisement has been deleted")
                 alert(res);
             else {
@@ -254,24 +255,10 @@ function addAd() {
         return;
     }
 
-    var textFormated = text.split(",");
-    var imagesFormated = images.split(",");
-    var daysFormated = JSON.parse('[' + days + ']');
-    var daysSorted = daysFormated.sort();
-    var uniqueDays =daysSorted.filter((v, i, a) => a.indexOf(v) === i);
-    var hoursFormated = JSON.parse('[' + hours + ']');
-    var hoursSorted = hoursFormated.sort();
-    var uniqueHours = hoursSorted.filter((v, i, a) => a.indexOf(v) === i);
-    var secondsFormated = JSON.parse('[' + secondsOfAd + ']');
-    var secondsSorted = secondsFormated.sort();
-    var uniqueSeconds =secondsSorted.filter((v, i, a) => a.indexOf(v) === i);
-
-
-
-    newAd = {
-        'name': name, 'text': textFormated, 'images': imagesFormated,
-        'FromDate': fromDate, 'ToDate': toDate, 'Days': uniqueDays, 'Hours': uniqueHours,
-        'secondsOfAd': uniqueSeconds, 'type': type
+    newAd = {	
+        'name': name, 'text': formatToList(text), 'images': formatToList(images),	
+        'FromDate': fromDate, 'ToDate': toDate, 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),	
+        'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type	
     }
 
     $.ajax({
@@ -280,6 +267,10 @@ function addAd() {
         contentType: 'application/json',
         data: JSON.stringify(newAd),
         success: function (res) {
+            if(res==="Not Connected"){
+                location.reload();
+                return;
+            }
             var counter = 0;
             var table = document.getElementById("Ads");
             var row = table.insertRow(-1);
@@ -396,13 +387,17 @@ function saveChangesToDB(editedAdForDB) {
         contentType: 'application/json',
         data: JSON.stringify(editedAdForDB),
         success: function (res) {
+            if(res==="Not Connected"){
+                location.reload();
+                return;
+            }
             var json = JSON.parse(res);
             var name = json['name'];
             var table = document.getElementById("Ads");
             var firstRow = table.rows[0];
             var colsLen = firstRow.cells.length;
             row = findByAttributeValue("Ads", name, 0);
-            for(var i=1;i<colsLen;i++){
+            for (var i = 1; i < colsLen; i++) {
                 row.children[i].children[0].value = json[Object.keys(json)[i]];
             }
             alert(name + " advertisement updated successfully");
@@ -604,8 +599,7 @@ function validateType(type) {
     return true;
 }
 
-function isNullOrEmptyField
-(str) {
+function isNullOrEmptyField(str) {
     if (str == null) {
         return false;
     }
@@ -623,31 +617,15 @@ function getAdFieldsForDB(ad) {
     var firstRow = table.rows[0];
     adFields = {};
 
-    text = ad.children[1].children[0].value + "";
-    images = ad.children[2].children[0].value + "";
-    daysFormated = JSON.parse('[' + ad.children[5].children[0].value + ']');
-    hoursFormated = JSON.parse('[' + ad.children[6].children[0].value + ']');
-    secondsFormated = JSON.parse('[' + ad.children[7].children[0].value + ']');
-
-    var textFormated = text.split(',');
-    var imagesFormated = images.split(',');;
-    var daysSorted = daysFormated.sort();
-    var uniqueDays=daysSorted.filter((v, i, a) => a.indexOf(v) === i);
-    var hoursSorted = hoursFormated.sort();
-    var uniqueHours=hoursSorted.filter((v, i, a) => a.indexOf(v) === i);
-    var secondsSorted = secondsFormated.sort();
-    var uniqueSeconds=secondsSorted.filter((v, i, a) => a.indexOf(v) === i);
-
-    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value;
-    adFields[firstRow.cells[1].innerHTML] = textFormated;
-    adFields[firstRow.cells[2].innerHTML] = imagesFormated;
-    adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;
-    adFields[firstRow.cells[4].innerHTML] = ad.children[4].children[0].value;
-    adFields[firstRow.cells[5].innerHTML] = uniqueDays;
-    adFields[firstRow.cells[6].innerHTML] = uniqueHours;
-    adFields[firstRow.cells[7].innerHTML] = uniqueSeconds;
-    adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;
-
+    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value;	
+    adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);	
+    adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);	
+    adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;	
+    adFields[firstRow.cells[4].innerHTML] = ad.children[4].children[0].value;	
+    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(ad.children[5].children[0].value);	
+    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(ad.children[6].children[0].value);	
+    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(ad.children[7].children[0].value);	
+    adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;	
     return adFields;
 }
 
@@ -685,3 +663,16 @@ function isAdChanged(oldAd, newAd) {
     return false;
 }
 
+function sortAndUnique(input) {	
+    var inputFormated = JSON.parse('[' + input + ']');	
+    var inputSorted = inputFormated.sort(function (a, b) {	
+        return a - b;	
+    });;	
+    var uniqueInput = inputSorted.filter((v, i, a) => a.indexOf(v) === i);	
+    return uniqueInput;	
+}	
+function formatToList(input) {	
+    var text = input + "";	
+    var inputFormated = text.split(',');	
+    return inputFormated;	
+}

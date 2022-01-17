@@ -140,16 +140,10 @@ td{
 <script>
   const socket = io();
   socket.on('UpdateOnDatabaseActive', function (data) {
-        updateAdminPanelActive();
+        updateAdminPanelActive(data);
     });
   socket.on('UpdateOnDatabaseInActive', function (data) {
-      updateAdminPanelInActive();
-  });
-  socket.on('UpdateOnDatabaseActiveDelete', function (data) {
-      updateAdminPanelActiveDelete(data);
-  });
-  socket.on('UpdateOnDatabaseInActiveDelete', function (data) {
-    updateAdminPanelInActiveDelete(data);
+        updateAdminPanelInActive(data);
   });
 </script>
 </html>
