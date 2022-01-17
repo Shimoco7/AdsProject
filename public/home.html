@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Admin Login Page</title>
+      <script src="/js/jquery.js"></script>
+      <link rel="stylesheet" href="/css/homestyle.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+   </head>
+   <body>
+      <div class="center">
+         <div class="container">
+            <div class="text">
+               Admin Login Page
+            </div>
+            <form id="loginForm" method="post">
+               <div class="data">
+                  <label>Username</label>
+                  <input type="text" id="username" name="username" required>
+               </div>
+               <div class="data">
+                  <label>Password</label>
+                  <input type="password" id="password" name="password" required>
+               </div>
+               <div class="btn">
+                  <div class="inner"></div>
+                  <button type="submit" id="submitButton" name="submitButton">login</button>
+               </div>
+            </form>
+            <div id="result" style="color: red;"></div>
+         </div>
+      </div>
+      <script src="/js/admin.js"></script>
+   </body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+table, th, td {
+  border:1px solid black;
+}
+
+h1,h2{
+  font-family: 'Poppins', sans-serif;
+}
+td{
+  height: 50px;
+}
+
+#Ads,#ActiveUsers,#InActiveUsers {
+  font-family: 'Poppins', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#Ads td, #Ads th,#ActiveUsers td, #ActiveUsers th,#InActiveUsers td, #InActiveUsers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+#ActiveUsers tr:nth-child(even){background-color: #f2f2f2;}
+#InActiveUsers tr:nth-child(even){background-color: #f2f2f2;}
+
+#Ads tr:hover {background-color: #ddd;}
+#ActiveUsers tr:hover {background-color: #ddd;}
+#InActiveUsers tr:hover {background-color: #ddd;}
+
+#Ads th,#ActiveUsers th,#InActiveUsers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #054d7e;
+  color: white;
+}
+
+.button {
+  background-color: #555555;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #054d7e;
+  color: white;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.center{
+  text-align: center;
+}
+
+</style>
+<head>
+  <script src="js/jquery.js"></script>
+</head>
+<body>
+<h1 style="text-align: center; text-decoration: underline; ">Admin Panel</h1>
+
+<h2 style="text-decoration: underline;">Ads</h2>
+<button class="button" id="add" onclick="addAd()">Add an Ad</button>
+<button class="button" id="delete" onclick="deleteAd()">Delete an Ad</button>
+<button class="button" id="edit" onclick="editAd()">Edit an Ad</button>
+<button class="button" id="cancel" onclick="cancelEditingAd()">Cancel Editing</button>
+<button class="button" id="save" onclick="saveChanges()">Save Changes</button>
+<table id="Ads" style="width: 100%;">
+  <tr>
+    <th>name</th>
+    <th>text</th>
+    <th>images</th>
+    <th>FromDate</th>
+    <th>ToDate</th>
+    <th>Days</th>
+    <th>Hours</th>
+    <th>secondsOfAd</th>
+    <th>type</th>
+  </tr>
+</table>
+
+
+<h2 style="text-decoration: underline;">ActiveUsers</h2>
+<table id="ActiveUsers" style="width:100%">
+  <tr>
+    <th>client</th>
+    <th>screen</th>
+    <th>time</th>
+  </tr>
+</table>
+
+
+<h2 style="text-decoration: underline;">InActiveUsers</h2>
+<table id="InActiveUsers" style="width:100%">
+  <tr>
+    <th>client</th>
+    <th>screen</th>
+    <th>disconnectionTime</th>
+  </tr>
+</table>
+
+<h2 id="formTitle" style="color: black; text-decoration: underline; text-align: center">Change Username and Password</h2>
+<div class="center">
+  <div class="container">
+     <form id="updateAdminForm" method="post">
+        <div class="data">
+           <label style="color: #054d7e;font-weight: bold;">Username:</label>
+           <input type="text" id="username" name="username" required>
+        </div>
+        <div class="data">
+           <label style="color: #054d7e;font-weight: bold;">Password:</label>
+           <input type="password" id="password" name="password" required>
+        </div>
+        <div class="data">
+          <label style="color: #054d7e;font-weight: bold;">Confirm Password:</label>
+          <input type="password" id="confirm_password" name="password" required>
+        </div>
+        <div class="btn">
+          <div class="inner"></div>
+          <button class="button" type="button" onclick="showPassFunc()" id="showPassword">Show Password</button>
+          <button class="button" type="submit" id="submitButton" name="submitButton">Save Changes</button>
+         </div>
+     </form>
+  </div>
+</div>
+</body>
+<script src="js/adminPanel.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  socket.on('UpdateOnDatabaseActive', function (data) {
+        updateAdminPanelActive();
+    });
+  socket.on('UpdateOnDatabaseInActive', function (data) {
+      updateAdminPanelInActive();
+  });
+  socket.on('UpdateOnDatabaseActiveDelete', function (data) {
+      updateAdminPanelActiveDelete(data);
+  });
+  socket.on('UpdateOnDatabaseInActiveDelete', function (data) {
+    updateAdminPanelInActiveDelete(data);
+  });
+</script>
+</html>
+
