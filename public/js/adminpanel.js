@@ -175,15 +175,15 @@ function deleteAd() {
     if (table.tBodies[0].rows.length < 2) {
         return;
     }
-    var adName = prompt("Please enter the advertisement name you want to delete");
-    if (!isNullOrEmptyField
-        (adName)) {
-        return;
+
+    while (!validateEditAndDelete(adName)) {
+        var adName = prompt("Please enter the advertisement name you want to delete");
+        if (adName == null) {
+            return;
+        }
     }
-    if (findByAttributeValue("Ads", adName, "tr") == null) {
-        alert("Error; The advertisement name does not exist");
-        return;
-    }
+
+
     $.ajax({
         url: '/DeleteAd',
         type: 'POST',
@@ -191,7 +191,7 @@ function deleteAd() {
         data: JSON.stringify({ 'name': adName }),
         success: function (res) {
             console.log(res);
-            if(res==="Not Connected"){
+            if (res === "Not Connected") {
                 location.reload();
                 return;
             }
@@ -208,57 +208,82 @@ function deleteAd() {
 
 
 function addAd() {
-    var name = prompt("Please enter the advertisement name:");
-    if (!validateName(name)) {
-        return;
+
+    while (!validateName(name)) {
+        var name = prompt("Please enter the advertisement name:");
+        if (name == null) {
+            return;
+        }
     }
 
-    var text = prompt("Please enter the advertisement text(sentences separated by a comma(,) , Exactly 2):");
-    if (!validateText(text)) {
-        return;
-    }
-
-    var images = prompt("Please enter the advertisement images as a valid URL (separated by a comma(,) , Exactly 6):");
-    if (!validateImages(images)) {
-        return;
-    }
-
-    var fromDate = prompt("Please enter the advertisement start date ( For Example: M/DD/YYYY):");
-    if (!validateDate(fromDate)) {
-        return;
+    while (!validateText(text)) {
+        var text = prompt("Please enter the advertisement text(sentences separated by a comma(,) , Exactly 2):");
+        if (text == null) {
+            return;
+        }
     }
 
 
-    var toDate = prompt("Please enter the advertisement end date ( For Example: M/DD/YYYY):");
-    if (!validateDate(toDate)) {
-        return;
-    }
-
-    var days = prompt("Please enter the advertisement days you want to display (0-6 for each day ,separated by a comma(,)):");
-    if (!validateDays(days)) {
-        return;
-    }
-
-    var hours = prompt("Please enter the advertisement hours you want to display (0-23 for each hour ,separated by a comma(,)):");
-    if (!validateHours(hours)) {
-        return;
-    }
-
-    var secondsOfAd = prompt("Please enter the advertisement seconds you want to display (0-9 for each second ,separated by a comma(,)):");
-    if (!validateSeconds(secondsOfAd)) {
-        return;
+    while (!validateImages(images)) {
+        var images = prompt("Please enter the advertisement images as a valid URL (separated by a comma(,) , Exactly 6):");
+        if (images == null) {
+            return;
+        }
     }
 
 
-    var type = prompt("Please enter the advertisement type:");
-    if (!validateType(type)) {
-        return;
+    while (!validateDate(fromDate)) {
+        var fromDate = prompt("Please enter the advertisement start date ( For Example: M/DD/YYYY):");
+        if (fromDate == null) {
+            return;
+        }
     }
 
-    newAd = {	
-        'name': name, 'text': formatToList(text), 'images': formatToList(images),	
-        'FromDate': fromDate, 'ToDate': toDate, 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),	
-        'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type	
+
+    while (!validateDate(toDate)) {
+        var toDate = prompt("Please enter the advertisement end date ( For Example: M/DD/YYYY):");
+        if (toDate == null) {
+            return;
+        }
+    }
+
+
+    while (!validateDays(days)) {
+        var days = prompt("Please enter the advertisement days you want to display (0-6 for each day ,separated by a comma(,)):");
+        if (days == null) {
+            return;
+        }
+    }
+
+
+    while (!validateHours(hours)) {
+        var hours = prompt("Please enter the advertisement hours you want to display (0-23 for each hour ,separated by a comma(,)):");
+        if (hours == null) {
+            return;
+        }
+    }
+
+
+    while (!validateSeconds(secondsOfAd)) {
+        var secondsOfAd = prompt("Please enter the advertisement seconds you want to display (0-9 for each second ,separated by a comma(,)):");
+        if (secondsOfAd == null) {
+            return;
+        }
+    }
+
+
+
+    while (!validateType(type)) {
+        var type = prompt("Please enter the advertisement type:");
+        if (type == null) {
+            return;
+        }
+    }
+
+    newAd = {
+        'name': name, 'text': formatToList(text), 'images': formatToList(images),
+        'FromDate': fromDate, 'ToDate': toDate, 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
+        'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type
     }
 
     $.ajax({
@@ -267,7 +292,7 @@ function addAd() {
         contentType: 'application/json',
         data: JSON.stringify(newAd),
         success: function (res) {
-            if(res==="Not Connected"){
+            if (res === "Not Connected") {
                 location.reload();
                 return;
             }
@@ -309,17 +334,14 @@ function editAd() {
         alert("Error; There is already an advertisement during editing process");
         return
     }
-    var adName = prompt("Please enter the advertisement name you want to edit");
-    if (!isNullOrEmptyField
-        (adName)) {
-        return;
+
+    while (!validateEditAndDelete(adName)) {
+        var adName = prompt("Please enter the advertisement name you want to edit");
+        if (adName == null) {
+            return;
+        }
     }
     var ad = findByAttributeValue("Ads", adName, "tr");
-
-    if (ad == null) {
-        alert("Error; The advertisement name does not exist");
-        return;
-    }
     oldAd = getAdFields(ad);
     unDisableRow(ad);
 }
@@ -387,7 +409,7 @@ function saveChangesToDB(editedAdForDB) {
         contentType: 'application/json',
         data: JSON.stringify(editedAdForDB),
         success: function (res) {
-            if(res==="Not Connected"){
+            if (res === "Not Connected") {
                 location.reload();
                 return;
             }
@@ -599,6 +621,21 @@ function validateType(type) {
     return true;
 }
 
+
+function validateEditAndDelete(adName) {
+    if (!isNullOrEmptyField
+        (adName)) {
+        return false;
+    }
+    if (findByAttributeValue("Ads", adName, "tr") == null) {
+        alert("Error; The advertisement name does not exist");
+        return false;
+    }
+
+    return true
+
+}
+
 function isNullOrEmptyField(str) {
     if (str == null) {
         return false;
@@ -617,15 +654,15 @@ function getAdFieldsForDB(ad) {
     var firstRow = table.rows[0];
     adFields = {};
 
-    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value;	
-    adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);	
-    adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);	
-    adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;	
-    adFields[firstRow.cells[4].innerHTML] = ad.children[4].children[0].value;	
-    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(ad.children[5].children[0].value);	
-    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(ad.children[6].children[0].value);	
-    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(ad.children[7].children[0].value);	
-    adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;	
+    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value;
+    adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);
+    adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);
+    adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;
+    adFields[firstRow.cells[4].innerHTML] = ad.children[4].children[0].value;
+    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(ad.children[5].children[0].value);
+    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(ad.children[6].children[0].value);
+    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(ad.children[7].children[0].value);
+    adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;
     return adFields;
 }
 
@@ -663,16 +700,16 @@ function isAdChanged(oldAd, newAd) {
     return false;
 }
 
-function sortAndUnique(input) {	
-    var inputFormated = JSON.parse('[' + input + ']');	
-    var inputSorted = inputFormated.sort(function (a, b) {	
-        return a - b;	
-    });;	
-    var uniqueInput = inputSorted.filter((v, i, a) => a.indexOf(v) === i);	
-    return uniqueInput;	
-}	
-function formatToList(input) {	
-    var text = input + "";	
-    var inputFormated = text.split(',');	
-    return inputFormated;	
+function sortAndUnique(input) {
+    var inputFormated = JSON.parse('[' + input + ']');
+    var inputSorted = inputFormated.sort(function (a, b) {
+        return a - b;
+    });;
+    var uniqueInput = inputSorted.filter((v, i, a) => a.indexOf(v) === i);
+    return uniqueInput;
+}
+function formatToList(input) {
+    var text = input + "";
+    var inputFormated = text.split(',');
+    return inputFormated;
 }
