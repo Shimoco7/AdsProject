@@ -239,7 +239,7 @@ function addAd() {
 
 
     while (!validateDate(fromDate)) {
-        var fromDate = prompt("Please enter the advertisement start date ( For Example: M/DD/YYYY):");
+        var fromDate = prompt("Please enter the advertisement start date ( For Example: MM/DD/YYYY):");
         if (fromDate == null) {
             return;
         }
@@ -247,7 +247,7 @@ function addAd() {
 
 
     while (!validateDate(toDate)) {
-        var toDate = prompt("Please enter the advertisement end date ( For Example: M/DD/YYYY):");
+        var toDate = prompt("Please enter the advertisement end date ( For Example: MM/DD/YYYY):");
         if (toDate == null) {
             return;
         }
@@ -534,7 +534,7 @@ function validateText(text) {
         alert("Error: Enter a valid text with letters, numbers, spaces, commas and periods only");
         return false;
     }
-    if (text.split(",").length != 2) {
+    if (text.split(",").filter(function(i){return i}).length != 2) {
         alert("Error: The exact number of sentences separated by a comma is : 2");
         return false;
     }
@@ -549,7 +549,7 @@ function validateImages(images) {
         return false;
     }
 
-    if (images.split(",").length != 6) {
+    if (images.split(",").filter(function(i){return i}).length != 6) {
         alert("Error: The exact number of sentences separated by a comma is : 6");
         return false;
     }
