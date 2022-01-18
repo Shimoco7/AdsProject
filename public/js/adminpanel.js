@@ -25,8 +25,8 @@ for (var i = 0; i < arr.length; i++) {
                     else {
                         var element1 = document.createElement('input');
                         element1.type = "text";
-                        element1.size = "70";
-                        element1.height = "70px";
+                        //element1.size = "70";
+                        //element1.height = "70px";
                     }
                     element1.value = element[firstRowKey];
                     element1.disabled = true;
@@ -91,10 +91,16 @@ $('#updateAdminForm').submit(function (event) {
         dataType: 'JSON',
         success: function (res) {
             if (res === "Password Updated Successfully") {
-                $('#formTitle').attr("style", "color: green;");
+                $('#formTitle').css({
+                    "color":"green",
+                    "text-align":"center"
+                })
                 $('#formTitle').text("Username and/or Password have been changed successfully");
                 setTimeout(() => {
-                    $('#formTitle').attr("style", "color: black;");
+                    $('#formTitle').css({
+                        "color":"black",
+                        "text-align":"center"
+                    })
                     $('#formTitle').text("Change Username and Password");
                 }, 5 * 1000);
             }
