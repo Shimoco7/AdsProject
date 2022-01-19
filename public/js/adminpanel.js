@@ -13,7 +13,7 @@ for (var i = 0; i < arr.length; i++) {
             for (var k = 0; k < rowsLen; k++) {
                 const element = json[1][k];
                 var row = table.insertRow(-1);
-                row.setAttribute(json[0], element[Object.keys(element)[1]], 0);
+                row.setAttribute(json[0], element[Object.keys(element)[1]].toLowerCase(), 0);
                 for (var j = 0; j < colsLen; j++) {
                     var firstRowKey = firstRow.cells[j].innerHTML;
                     var cell = row.insertCell(j);
@@ -21,14 +21,21 @@ for (var i = 0; i < arr.length; i++) {
                         var element1 = document.createElement('textarea');
                         element1.rows = 6;
                         element1.cols = 30;
+                        if (firstRowKey == Object.keys(element)[1]) {
+                            element1.value = element[firstRowKey].toLowerCase();
+                        }
+                        else {
+                            element1.value = element[firstRowKey];
+                        }
                     }
                     else {
                         var element1 = document.createElement('input');
                         element1.type = "text";
+                        element1.value = element[firstRowKey];
                         //element1.size = "70";
                         //element1.height = "70px";
                     }
-                    element1.value = element[firstRowKey];
+
                     element1.disabled = true;
                     cell.appendChild(element1);
                 }
@@ -92,14 +99,14 @@ $('#updateAdminForm').submit(function (event) {
         success: function (res) {
             if (res === "Password Updated Successfully") {
                 $('#formTitle').css({
-                    "color":"green",
-                    "text-align":"center"
+                    "color": "green",
+                    "text-align": "center"
                 })
                 $('#formTitle').text("Username and/or Password have been changed successfully");
                 setTimeout(() => {
                     $('#formTitle').css({
-                        "color":"black",
-                        "text-align":"center"
+                        "color": "black",
+                        "text-align": "center"
                     })
                     $('#formTitle').text("Change Username and Password");
                 }, 5 * 1000);
@@ -189,12 +196,11 @@ function deleteAd() {
         }
     }
 
-
     $.ajax({
         url: '/DeleteAd',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ 'name': adName }),
+        data: JSON.stringify({ 'name': adName.toLowerCase() }),
         success: function (res) {
             console.log(res);
             if (res === "Not Connected") {
@@ -204,7 +210,7 @@ function deleteAd() {
             if (res === "No advertisement has been deleted")
                 alert(res);
             else {
-                findByAttributeValue("Ads", adName, "tr").remove();
+                findByAttributeValue("Ads", adName.toLowerCase(), "tr").remove();
             }
         },
         error: function (error) {
@@ -287,7 +293,7 @@ function addAd() {
     }
 
     newAd = {
-        'name': name, 'text': formatToList(text), 'images': formatToList(images),
+        'name': name.toLowerCase(), 'text': formatToList(text), 'images': formatToList(images),
         'FromDate': fromDate, 'ToDate': toDate, 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
         'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type
     }
@@ -305,7 +311,7 @@ function addAd() {
             var counter = 0;
             var table = document.getElementById("Ads");
             var row = table.insertRow(-1);
-            row.setAttribute("Ads", name, 0);
+            row.setAttribute("Ads", name.toLowerCase(), 0);
             for (const [key, value] of Object.entries(newAd)) {
                 var cell = row.insertCell(counter);
                 counter++;
@@ -347,7 +353,7 @@ function editAd() {
             return;
         }
     }
-    var ad = findByAttributeValue("Ads", adName, "tr");
+    var ad = findByAttributeValue("Ads", adName.toLowerCase(), "tr");
     oldAd = getAdFields(ad);
     unDisableRow(ad);
 }
@@ -424,7 +430,7 @@ function saveChangesToDB(editedAdForDB) {
             var table = document.getElementById("Ads");
             var firstRow = table.rows[0];
             var colsLen = firstRow.cells.length;
-            row = findByAttributeValue("Ads", name, 0);
+            row = findByAttributeValue("Ads", name.toLowerCase(), 0);
             for (var i = 1; i < colsLen; i++) {
                 row.children[i].children[0].value = json[Object.keys(json)[i]];
             }
@@ -511,11 +517,11 @@ function validateName(name) {
         return false;
     }
     var namesRegex = /^(?![\s.]+$)[a-zA-Z\s.]*$/;
-    if (!namesRegex.test(name)) {
+    if (!namesRegex.test(name.toLowerCase())) {
         alert("Error; Enter a valid advertisement name with alphabets and spaces only");
         return false;
     }
-    if (findByAttributeValue("Ads", name, "tr") != null) {
+    if (findByAttributeValue("Ads", name.toLowerCase(), "tr") != null) {
         alert("Error; The advertisement name is already exist");
         return false;
     }
@@ -534,7 +540,7 @@ function validateText(text) {
         alert("Error: Enter a valid text with letters, numbers, spaces, commas and periods only");
         return false;
     }
-    if (text.split(",").filter(function(i){return i}).length != 2) {
+    if (text.split(",").filter(function (i) { return i }).length != 2) {
         alert("Error: The exact number of sentences separated by a comma is : 2");
         return false;
     }
@@ -549,7 +555,7 @@ function validateImages(images) {
         return false;
     }
 
-    if (images.split(",").filter(function(i){return i}).length != 6) {
+    if (images.split(",").filter(function (i) { return i }).length != 6) {
         alert("Error: The exact number of sentences separated by a comma is : 6");
         return false;
     }
@@ -633,7 +639,7 @@ function validateEditAndDelete(adName) {
         (adName)) {
         return false;
     }
-    if (findByAttributeValue("Ads", adName, "tr") == null) {
+    if (findByAttributeValue("Ads", adName.toLowerCase(), "tr") == null) {
         alert("Error; The advertisement name does not exist");
         return false;
     }
@@ -660,7 +666,7 @@ function getAdFieldsForDB(ad) {
     var firstRow = table.rows[0];
     adFields = {};
 
-    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value;
+    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value.toLowerCase();
     adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);
     adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);
     adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;
@@ -677,7 +683,8 @@ function getAdFields(ad) {
     var firstRow = table.rows[0];
     var colsLen = firstRow.cells.length;
     adFields = {};
-    for (var i = 0; i < colsLen; i++) {
+    adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value.toLowerCase();
+    for (var i = 1; i < colsLen; i++) {
         adFields[firstRow.cells[i].innerHTML] = ad.children[i].children[0].value;
     }
     return adFields;
@@ -687,7 +694,7 @@ function setAdFields(adFields) {
     var table = document.getElementById("Ads");
     var firstRow = table.rows[0];
     var colsLen = firstRow.cells.length;
-    var ad = findByAttributeValue("Ads", adFields[firstRow.cells[0].innerHTML], "tr");
+    var ad = findByAttributeValue("Ads", adFields[firstRow.cells[0].innerHTML].toLowerCase(), "tr");
     for (var i = 1; i < colsLen; i++) {
         ad.children[i].children[0].value = adFields[firstRow.cells[i].innerHTML];
     }
@@ -698,7 +705,7 @@ function isAdChanged(oldAd, newAd) {
     var table = document.getElementById("Ads");
     var firstRow = table.rows[0];
     var colsLen = firstRow.cells.length;
-    for (var i = 0; i < colsLen; i++) {
+    for (var i = 1; i < colsLen; i++) {
         if (oldAd[firstRow.cells[i].innerHTML] != newAd[firstRow.cells[i].innerHTML]) {
             return true;
         }

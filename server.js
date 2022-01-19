@@ -177,7 +177,7 @@ app.get('/getActiveUsers',function(req,res){
 app.post('/DeleteAd',function(req,res){
   db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
     if(result){
-      db.collection('Ads').deleteOne({name:req.body.name},(err,result)=>{
+      db.collection('Ads').deleteOne({ name: RegExp(req.body.name, 'i')},(err,result)=>{
         if(result.deletedCount==0)
           res.send("No advertisment has been deleted");
         else{
@@ -209,7 +209,7 @@ app.post('/AddAd',function(req,res){
   app.post('/EditAd',function(req,res){
     db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
       if(result){
-        db.collection('Ads').updateOne({name: req.body.name}, {$set: req.body}, function(err, result){
+        db.collection('Ads').updateOne({ name: RegExp(req.body.name, 'i')}, {$set: req.body}, function(err, result){
           res.send(JSON.stringify(req.body));
         });
       }

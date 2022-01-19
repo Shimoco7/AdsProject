@@ -1,6 +1,6 @@
 [
     {
-        "name": "Passover",
+        "name": "passover",
         "text":
             ["Happy Passover", "This holiday is all about freedom"]
         ,
@@ -15,7 +15,7 @@
         "type" : "0"
     },
     {
-        "name": "Purim",
+        "name": "purim",
         "text":
             ["Happy Purim", "Mordecai The Jewish"]
         ,
@@ -30,7 +30,7 @@
         "type" : "0"
     },
     {
-        "name": "Hanukkah",
+        "name": "hanukkah",
         "text":
             ["Happy Hanukkah", "Holiday of Light"]
         ,
@@ -45,7 +45,7 @@
         "type" : "0"
     },
     {
-        "name": "Sukkot",
+        "name": "sukkot",
         "text":
             ["Happy Sukkot", "Let's build a big Sukka"]
         ,
@@ -60,7 +60,7 @@
         "type" : "0"
     },
     {
-        "name": "Shavuot",
+        "name": "shavuot",
         "text":
             ["Happy Shavuot", "Milk,Cheese and Pizza"]
         ,
@@ -75,7 +75,7 @@
         "type" : "0"
     },
     {
-        "name": "Bread",
+        "name": "bread",
         "text":
             ["Check Out Our Bread", "Smells like Paris"]
         ,
@@ -90,7 +90,7 @@
         "type" : "1"
     },
     {
-        "name": "Dairy",
+        "name": "dairy",
         "text":
             ["You CANNOT Miss Our Dairy Astonishing Products", "Over 60! different flavours of cheese"]
         ,
@@ -105,7 +105,7 @@
         "type" : "1"
     },
     {
-        "name": "Candies",
+        "name": "candies",
         "text":
             ["Our International Sweets", "Brace yourselves - you are gonna get addicted"]
         ,
@@ -120,7 +120,7 @@
         "type" : "1"
     },
     {
-        "name": "Oven",
+        "name": "oven",
         "text":
             ["Oven", "Let's cook something"]
         ,
@@ -135,7 +135,7 @@
         "type" : "2"
     },
     {
-        "name": "Television",
+        "name": "television",
         "text":
             ["Television", "Netflix and chill"]
         ,
@@ -150,7 +150,7 @@
         "type" : "2"
     },
     {
-        "name": "Test",
+        "name": "test",
         "text":
             ["Test", "Test"]
         ,
