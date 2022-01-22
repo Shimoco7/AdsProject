@@ -587,7 +587,7 @@ function validateFromDate(fromDate) {
     if (curDate.getTime() > fromDateObj.getTime()) {
         return ((curDate.getMonth() + 1) + '/' + curDate.getDate() + '/' + curDate.getFullYear());
     }
-    else return fromDate;
+    return fromDate;
 
 }
 
@@ -597,7 +597,7 @@ function validateToDate(fromDate, toDate) {
     if (fromDateObj.getTime() > toDateObj.getTime()) {
         return fromDate;
     }
-    else return toDate;
+    return toDate;
 
 }
 
