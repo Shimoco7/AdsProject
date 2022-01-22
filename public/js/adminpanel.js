@@ -250,6 +250,7 @@ function addAd() {
             return;
         }
     }
+    fromDate = validateFromDate(fromDate);
 
 
     while (!validateDate(toDate)) {
@@ -261,26 +262,35 @@ function addAd() {
 
 
     while (!validateDays(days)) {
-        var days = prompt("Please enter the advertisement days you want to display (0-6 for each day ,separated by a comma(,)):");
+        var days = prompt("Please enter the advertisement days you want to display (0-6 for each day ,separated by a comma(,)).\n(if you want to set all optional days use: all)");
         if (days == null) {
             return;
         }
     }
+    if (days.toLocaleLowerCase() == "all") {
+        days = "0,1,2,3,4,5,6";
+    }
 
 
     while (!validateHours(hours)) {
-        var hours = prompt("Please enter the advertisement hours you want to display (0-23 for each hour ,separated by a comma(,)):");
+        var hours = prompt("Please enter the advertisement hours you want to display (0-23 for each hour ,separated by a comma(,)).\n(if you want to set all optional hours use: all");
         if (hours == null) {
             return;
         }
     }
+    if (hours.toLocaleLowerCase() == "all") {
+        hours = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
+    }
 
 
     while (!validateSeconds(secondsOfAd)) {
-        var secondsOfAd = prompt("Please enter the advertisement seconds you want to display (0-9 for each second ,separated by a comma(,)):");
+        var secondsOfAd = prompt("Please enter the advertisement seconds you want to display (0-9 for each second ,separated by a comma(,)).\n(if you want to set all optional seconds use: all)");
         if (secondsOfAd == null) {
             return;
         }
+    }
+    if (secondsOfAd.toLocaleLowerCase() == "all") {
+        secondsOfAd = "0,1,2,3,4,5,6,7,8,9";
     }
 
 
@@ -294,7 +304,7 @@ function addAd() {
 
     newAd = {
         'name': name.toLowerCase(), 'text': formatToList(text), 'images': formatToList(images),
-        'FromDate': validateCurrentDate(fromDate), 'ToDate': validateCurrentDate(toDate), 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
+        'FromDate': fromDate, 'ToDate': validateToDate(fromDate,toDate), 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
         'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type
     }
 
@@ -577,13 +587,23 @@ function validateDate(date) {
 
 }
 
-function validateCurrentDate(date) {
+function validateFromDate(fromDate) {
     var curDate = new Date();
-    var date = new Date(date);
-    if (curDate.getTime() > date.getTime()) {
+    var fromDateObj = new Date(fromDate);
+    if (curDate.getTime() > fromDateObj.getTime()) {
         return ((curDate.getMonth() + 1) + '/' + curDate.getDate() + '/' + curDate.getFullYear());
     }
-    else return ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
+    else return fromDate;
+
+}
+
+function validateToDate(fromDate, toDate) {
+    var fromDateObj = new Date(fromDate);
+    var toDateObj = new Date(toDate);
+    if (fromDateObj.getTime() > toDateObj.getTime()) {
+        return fromDate;
+    }
+    else return toDate;
 
 }
 
@@ -593,8 +613,8 @@ function validateDays(days) {
         return false;
     }
     var days_regex = /^[0-6](,[0-6])*$/;
-    if (!days_regex.test(days)) {
-        alert("Error; Only digits (0-6) seperated by commas are allowed");
+    if (!days_regex.test(days) && days.toLowerCase() != "all") {
+        alert("Error; Only digits (0-6) seperated by commas are allowed\n(if you want to set all optional days use: all)");
         return false;
     }
     return true;
@@ -608,8 +628,8 @@ function validateHours(hours) {
     }
 
     var hours_regex = /^([0-9]|[1]\d|2[0-3])(,([0-9]|[1]\d|2[0-3]))*$/;
-    if (!hours_regex.test(hours)) {
-        alert("Error; Only digits (0-23) seperated by commas are allowed");
+    if (!hours_regex.test(hours) && hours.toLowerCase() != "all") {
+        alert("Error; Only digits (0-23) seperated by commas are allowed\n(if you want to set all optional hours use: all)");
         return false;
     }
     return true;
@@ -623,8 +643,8 @@ function validateSeconds(seconds) {
     }
 
     var seconds_regex = /^[0-9](,[0-9])*$/;
-    if (!seconds_regex.test(seconds)) {
-        alert("Error; Only digits (0-9) seperated by commas are allowed");
+    if (!seconds_regex.test(seconds) && seconds.toLowerCase() != "all") {
+        alert("Error; Only digits (0-9) seperated by commas are allowed\n(if you want to set all optional seconds use: all)");
         return false;
     }
     return true;
@@ -679,11 +699,24 @@ function getAdFieldsForDB(ad) {
     adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value.toLowerCase();
     adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);
     adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);
-    adFields[firstRow.cells[3].innerHTML] = validateCurrentDate(ad.children[3].children[0].value);
-    adFields[firstRow.cells[4].innerHTML] = validateCurrentDate(ad.children[4].children[0].value);
-    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(ad.children[5].children[0].value);
-    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(ad.children[6].children[0].value);
-    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(ad.children[7].children[0].value);
+    var fromDate = validateFromDate(ad.children[3].children[0].value)
+    adFields[firstRow.cells[3].innerHTML] = fromDate;
+    adFields[firstRow.cells[4].innerHTML] = validateToDate(fromDate,ad.children[4].children[0].value);
+    days = ad.children[5].children[0].value;
+    if (days.toLowerCase() == "all") {
+        days = "0,1,2,3,4,5,6";
+    }
+    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(days);
+    hours = ad.children[6].children[0].value;
+    if (hours.toLowerCase() == "all") {
+        hours = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
+    }
+    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(hours);
+    seconds = ad.children[7].children[0].value;
+    if (seconds.toLowerCase() == "all") {
+        seconds = "0,1,2,3,4,5,6,7,8,9";
+    }
+    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(seconds);
     adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;
     return adFields;
 }
