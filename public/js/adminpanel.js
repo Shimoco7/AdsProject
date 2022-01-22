@@ -267,9 +267,7 @@ function addAd() {
             return;
         }
     }
-    if (days.toLowerCase() == "all") {
-        days = "0,1,2,3,4,5,6";
-    }
+
 
 
     while (!validateHours(hours)) {
@@ -278,9 +276,7 @@ function addAd() {
             return;
         }
     }
-    if (hours.toLowerCase() == "all") {
-        hours = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
-    }
+
 
 
     while (!validateSeconds(secondsOfAd)) {
@@ -289,9 +285,7 @@ function addAd() {
             return;
         }
     }
-    if (secondsOfAd.toLowerCase() == "all") {
-        secondsOfAd = "0,1,2,3,4,5,6,7,8,9";
-    }
+
 
 
 
@@ -304,8 +298,8 @@ function addAd() {
 
     newAd = {
         'name': name.toLowerCase(), 'text': formatToList(text), 'images': formatToList(images),
-        'FromDate': fromDate, 'ToDate': validateToDate(fromDate,toDate), 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
-        'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type
+        'FromDate': fromDate, 'ToDate': validateToDate(fromDate, toDate), 'Days': sortAndUnique(validateAllDays(days)), 'Hours': sortAndUnique(validateAllHours(hours)),
+        'secondsOfAd': sortAndUnique(validateAllSeconds(secondsOfAd)), 'type': type
     }
 
     $.ajax({
@@ -621,6 +615,14 @@ function validateDays(days) {
 
 }
 
+function validateAllDays(days) {
+
+    if (days.toLowerCase() == "all") {
+        days = "0,1,2,3,4,5,6";
+    }
+    return days;
+}
+
 function validateHours(hours) {
     if (!isNullOrEmptyField
         (hours)) {
@@ -633,6 +635,14 @@ function validateHours(hours) {
         return false;
     }
     return true;
+}
+
+function validateAllHours(hours) {
+
+    if (hours.toLowerCase() == "all") {
+        hours = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
+    }
+    return hours;
 }
 
 
@@ -648,6 +658,14 @@ function validateSeconds(seconds) {
         return false;
     }
     return true;
+}
+
+function validateAllSeconds(seconds) {
+
+    if (seconds.toLowerCase() == "all") {
+        seconds = "0,1,2,3,4,5,6,7,8,9";
+    }
+    return seconds;
 }
 
 function validateType(type) {
@@ -699,24 +717,11 @@ function getAdFieldsForDB(ad) {
     adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value.toLowerCase();
     adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);
     adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);
-    var fromDate = validateFromDate(ad.children[3].children[0].value)
-    adFields[firstRow.cells[3].innerHTML] = fromDate;
-    adFields[firstRow.cells[4].innerHTML] = validateToDate(fromDate,ad.children[4].children[0].value);
-    days = ad.children[5].children[0].value;
-    if (days.toLowerCase() == "all") {
-        days = "0,1,2,3,4,5,6";
-    }
-    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(days);
-    hours = ad.children[6].children[0].value;
-    if (hours.toLowerCase() == "all") {
-        hours = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
-    }
-    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(hours);
-    seconds = ad.children[7].children[0].value;
-    if (seconds.toLowerCase() == "all") {
-        seconds = "0,1,2,3,4,5,6,7,8,9";
-    }
-    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(seconds);
+    adFields[firstRow.cells[3].innerHTML] = validateFromDate(ad.children[3].children[0].value);
+    adFields[firstRow.cells[4].innerHTML] = validateToDate(adFields[firstRow.cells[3].innerHTML], ad.children[4].children[0].value);
+    adFields[firstRow.cells[5].innerHTML] = sortAndUnique(validateAllDays(ad.children[5].children[0].value));
+    adFields[firstRow.cells[6].innerHTML] = sortAndUnique(validateAllHours(ad.children[6].children[0].value));
+    adFields[firstRow.cells[7].innerHTML] = sortAndUnique(validateAllSeconds(ad.children[7].children[0].value));
     adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;
     return adFields;
 }
