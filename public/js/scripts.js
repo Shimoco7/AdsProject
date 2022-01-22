@@ -14,9 +14,9 @@ $.ajax({
             for (let index = 0; index < ads.length; index++) {
                 curDate = new Date();
                 const element = ads[index];
-                var from = new Date(element.FromDate).getTime();
-                var to = new Date(element.ToDate).getTime();
-                    if (curDate.getTime() >= from && curDate.getTime() <= to) {
+                var from = new Date(element.FromDate).getDate();
+                var to = new Date(element.ToDate).getDate();
+                    if (curDate.getDate() >= from && curDate.getDate() <= to) {
                         if (element.Days.includes(curDate.getDay())) {
                             if (element.Hours.includes(curDate.getHours())) {
                                 if (element.secondsOfAd.includes(curDate.getSeconds() % 10)) {

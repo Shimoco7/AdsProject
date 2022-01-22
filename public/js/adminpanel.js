@@ -294,7 +294,7 @@ function addAd() {
 
     newAd = {
         'name': name.toLowerCase(), 'text': formatToList(text), 'images': formatToList(images),
-        'FromDate': fromDate, 'ToDate': toDate, 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
+        'FromDate': validateCurrentDate(fromDate), 'ToDate': validateCurrentDate(toDate), 'Days': sortAndUnique(days), 'Hours': sortAndUnique(hours),
         'secondsOfAd': sortAndUnique(secondsOfAd), 'type': type
     }
 
@@ -537,7 +537,7 @@ function validateText(text) {
     }
     var textRegex = /^[\.a-zA-Z0-9,!?' ]*$/;
     if (!textRegex.test(text)) {
-        alert("Error: Enter a valid text with letters, numbers, spaces, commas and periods only");
+        alert("Error: Enter a valid text with letters, numbers, spaces and commas (! ? ' characters are also allowed)");
         return false;
     }
     if (text.split(",").filter(function (i) { return i }).length != 2) {
@@ -574,6 +574,16 @@ function validateDate(date) {
         return false;
     }
     return true;
+
+}
+
+function validateCurrentDate(date) {
+    var curDate = new Date();
+    var date = new Date(date);
+    if (curDate.getTime() > date.getTime()) {
+        return ((curDate.getMonth() + 1) + '/' + curDate.getDate() + '/' + curDate.getFullYear());
+    }
+    else return ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
 
 }
 
@@ -669,8 +679,8 @@ function getAdFieldsForDB(ad) {
     adFields[firstRow.cells[0].innerHTML] = ad.children[0].children[0].value.toLowerCase();
     adFields[firstRow.cells[1].innerHTML] = formatToList(ad.children[1].children[0].value);
     adFields[firstRow.cells[2].innerHTML] = formatToList(ad.children[2].children[0].value);
-    adFields[firstRow.cells[3].innerHTML] = ad.children[3].children[0].value;
-    adFields[firstRow.cells[4].innerHTML] = ad.children[4].children[0].value;
+    adFields[firstRow.cells[3].innerHTML] = validateCurrentDate(ad.children[3].children[0].value);
+    adFields[firstRow.cells[4].innerHTML] = validateCurrentDate(ad.children[4].children[0].value);
     adFields[firstRow.cells[5].innerHTML] = sortAndUnique(ad.children[5].children[0].value);
     adFields[firstRow.cells[6].innerHTML] = sortAndUnique(ad.children[6].children[0].value);
     adFields[firstRow.cells[7].innerHTML] = sortAndUnique(ad.children[7].children[0].value);

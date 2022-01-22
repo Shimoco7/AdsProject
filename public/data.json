@@ -7,7 +7,7 @@
         "images": ["assets/img/holidays/matza-hagada.jpg", "assets/img/holidays/happy-passover.jpg", "assets/img/holidays/plate.jpg",
             "assets/img/holidays/passover-igeret.jpg", "assets/img/holidays/plate2.jpg", "assets/img/holidays/wine.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -22,7 +22,7 @@
         "images": ["assets/img/holidays/purim.jpeg", "assets/img/holidays/purim-2.jpeg", "assets/img/holidays/purim-3.jpeg",
             "assets/img/holidays/ozen-Haman.jpeg", "assets/img/holidays/purim-4.jpg", "assets/img/holidays/purim-5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -37,7 +37,7 @@
         "images": ["assets/img/holidays/hanukka.jpg", "assets/img/holidays/hanukka-1.jpg", "assets/img/holidays/hanukka-2.jpg",
             "assets/img/holidays/hanukka-3.jpg", "assets/img/holidays/hanukka-4.jpg", "assets/img/holidays/hanukka-5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -52,7 +52,7 @@
         "images": ["assets/img/holidays/Sukkot.jpeg", "assets/img/holidays/Sukkot-1.jpeg", "assets/img/holidays/Sukkot-2.jpeg",
             "assets/img/holidays/Sukkot-3.jpeg", "assets/img/holidays/Sukkot-4.jpeg", "assets/img/holidays/Sukkot-5.jpeg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -67,7 +67,7 @@
         "images": ["assets/img/holidays/shavuot.jpg", "assets/img/holidays/shavuot-1.jpg", "assets/img/holidays/shavuot-2.jpg",
             "assets/img/holidays/shavuot-3.jpg", "assets/img/holidays/shavuot-4.jpg", "assets/img/holidays/shavuot-5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -82,7 +82,7 @@
         "images": ["assets/img/supermarket/bread0.jpg", "assets/img/supermarket/bread1.jpg", "assets/img/supermarket/bread2.jpg",
             "assets/img/supermarket/bread3.jpg", "assets/img/supermarket/bread4.jpg", "assets/img/supermarket/bread5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -97,7 +97,7 @@
         "images": ["assets/img/supermarket/dairy0.jpg", "assets/img/supermarket/dairy1.jpg", "assets/img/supermarket/dairy2.jpg",
             "assets/img/supermarket/dairy3.jpg", "assets/img/supermarket/dairy4.jpg", "assets/img/supermarket/dairy5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -107,12 +107,12 @@
     {
         "name": "candies",
         "text":
-            ["Our International Sweets", "Brace yourselves - you are gonna get addicted"]
+            ["Our International Sweets", "Brace yourselves! you are gonna get addicted"]
         ,
         "images": ["assets/img/supermarket/candy0.jpg", "assets/img/supermarket/candy1.jpg", "assets/img/supermarket/candy2.jpg",
             "assets/img/supermarket/candy3.jpg", "assets/img/supermarket/candy4.jpg", "assets/img/supermarket/candy5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -127,7 +127,7 @@
         "images": ["assets/img/electrics/oven0.jpg", "assets/img/electrics/oven1.jpg", "assets/img/electrics/oven2.jpg",
             "assets/img/electrics/oven3.jpg", "assets/img/electrics/oven4.jpg", "assets/img/electrics/oven5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -142,7 +142,7 @@
         "images": ["assets/img/electrics/tv0.jpg", "assets/img/electrics/tv1.jpg", "assets/img/electrics/tv2.jpg",
             "assets/img/electrics/tv3.jpg", "assets/img/electrics/tv4.jpg", "assets/img/electrics/tv5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
@@ -157,7 +157,7 @@
         "images": ["assets/img/electrics/tv0.jpg", "assets/img/electrics/tv1.jpg", "assets/img/electrics/tv2.jpg",
             "assets/img/electrics/tv3.jpg", "assets/img/electrics/tv4.jpg", "assets/img/electrics/tv5.jpg"]
         ,
-        "FromDate": "1/1/2021",
+        "FromDate": "1/1/2022",
         "ToDate": "12/31/2022",
         "Days": [0,1,2,3,4,5,6],
         "Hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23],
