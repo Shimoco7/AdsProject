@@ -434,7 +434,6 @@ function saveChangesToDB(editedAdForDB) {
             for (var i = 1; i < colsLen; i++) {
                 row.children[i].children[0].value = json[Object.keys(json)[i]];
             }
-            alert(name + " advertisement updated successfully");
         },
         error: function (error) {
             console.log(error);
