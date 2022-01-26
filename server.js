@@ -273,7 +273,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/getAdsByType', function (req, res){
-  var query = {type : req.query.id};
+  var query = {types : {$in: [parseInt(req.query.id)]}};
   db.collection("Ads").find(query).toArray((err,result)=>{
     if(err) throw err;
     res.send(result);

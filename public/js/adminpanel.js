@@ -32,8 +32,6 @@ for (var i = 0; i < arr.length; i++) {
                         var element1 = document.createElement('input');
                         element1.type = "text";
                         element1.value = element[firstRowKey];
-                        //element1.size = "70";
-                        //element1.height = "70px";
                     }
 
                     element1.disabled = true;
@@ -127,7 +125,6 @@ function updateAdminPanelActive(data) {
         url: '/getActiveUsers',
         type: 'GET',
         success: function (res) {
-            console.log(res);
             var json = JSON.parse(res);
             fillUsersCells(json, "ActiveUsers");
             deleteUserFromTable(data, "InActiveUsers");
@@ -156,6 +153,8 @@ function deleteUserFromTable(clientId, collection) {
         client.disabled = false;
         if (client.value == clientId) {
             table.deleteRow(i);
+            i--;
+            rowCount--;
         }
         else {
             client.disabled = true;
@@ -174,8 +173,6 @@ function fillUsersCells(json, collection) {
         var cell = row.insertCell(j);
         var element1 = document.createElement('input');
         element1.type = "text";
-        element1.size = "70";
-        element1.height = "70px";
         element1.value = element[firstRowKey];
         element1.disabled = true;
         cell.appendChild(element1);
@@ -202,7 +199,6 @@ function deleteAd() {
         contentType: 'application/json',
         data: JSON.stringify({ 'name': adName.toLowerCase() }),
         success: function (res) {
-            console.log(res);
             if (res === "Not Connected") {
                 location.reload();
                 return;
@@ -289,9 +285,9 @@ function addAd() {
 
 
 
-    while (!validateType(type)) {
-        var type = prompt("Please enter the advertisement type:");
-        if (type == null) {
+    while (!validateTypes(types)) {
+        var types = prompt("Please enter the advertisement types.\n(if you want to set all optional types use: all)");
+        if (types == null) {
             return;
         }
     }
@@ -299,7 +295,7 @@ function addAd() {
     newAd = {
         'name': name.toLowerCase(), 'text': formatToList(text), 'images': formatToList(images),
         'FromDate': fromDate, 'ToDate': validateToDate(fromDate, toDate), 'Days': sortAndUnique(validateAllDays(days)), 'Hours': sortAndUnique(validateAllHours(hours)),
-        'secondsOfAd': sortAndUnique(validateAllSeconds(secondsOfAd)), 'type': type
+        'secondsOfAd': sortAndUnique(validateAllSeconds(secondsOfAd)), 'types': sortAndUnique(validateAllTypes(types))
     }
 
     $.ajax({
@@ -407,7 +403,7 @@ function saveChanges() {
     }
 
 
-    if (!validateType(editedAd["type"])) {
+    if (!validateTypes(editedAd["types"])) {
         return;
     }
 
@@ -623,6 +619,14 @@ function validateAllDays(days) {
     return days;
 }
 
+function validateAllTypes(types) {
+
+    if (types.toLowerCase() == "all") {
+        types = "0,1,2";
+    }
+    return types;
+}
+
 function validateHours(hours) {
     if (!isNullOrEmptyField
         (hours)) {
@@ -668,14 +672,18 @@ function validateAllSeconds(seconds) {
     return seconds;
 }
 
-function validateType(type) {
+function validateTypes(types) {
     if (!isNullOrEmptyField
-        (type)) {
+        (types)) {
         return false;
     }
-
-    if (!(type == "0" || type == "1" || type == "2")) {
-        alert("Error; The type is not allowed, the valid types are : 0,1,2");
+    if (types.toLowerCase() == "all") {
+        return true;
+    }
+    var availableTypes = [0,1,2];
+    var typesList = types.split(",").filter(item => !availableTypes.includes(parseInt(item)));
+    if (typesList.length >= 1 || typesList.includes("")) {
+        alert("Error; The types are not allowed, the valid types are : 0,1,2\n(if you want to set all optional types use: all)");
         return false;
     }
     return true;
@@ -722,7 +730,7 @@ function getAdFieldsForDB(ad) {
     adFields[firstRow.cells[5].innerHTML] = sortAndUnique(validateAllDays(ad.children[5].children[0].value));
     adFields[firstRow.cells[6].innerHTML] = sortAndUnique(validateAllHours(ad.children[6].children[0].value));
     adFields[firstRow.cells[7].innerHTML] = sortAndUnique(validateAllSeconds(ad.children[7].children[0].value));
-    adFields[firstRow.cells[8].innerHTML] = ad.children[8].children[0].value;
+    adFields[firstRow.cells[8].innerHTML] = sortAndUnique(validateAllTypes(ad.children[8].children[0].value));
     return adFields;
 }
 
