@@ -16,13 +16,20 @@ $.ajax({
                 const element = ads[index];
                 var from = new Date(element.FromDate).getDate();
                 var to = new Date(element.ToDate).getDate();
+                var adTitle = $("#adTitle");
+                var adDetails = $("#adDetails");
+                adTitle.text("");
+                adDetails.text("");
+                document.getElementById('line1').style.visibility = 'hidden';
+                document.getElementById('line2').style.visibility = 'hidden';
+                document.getElementById('star').style.visibility = 'hidden';
+                for (let i = 0; i < 6; i++) {
+                    document.getElementById("img" + i.toString()).style.visibility="hidden";
+                }
                     if (curDate.getDate() >= from && curDate.getDate() <= to) {
                         if (element.Days.includes(curDate.getDay())) {
                             if (element.Hours.includes(curDate.getHours())) {
                                 if (element.secondsOfAd.includes(curDate.getSeconds() % 10)) {
-                                    $(function () {
-                                        var adTitle = $("#adTitle");
-                                        var adDetails = $("#adDetails");
                                         adTitle.text(element.text[0]);
                                         adDetails.text(element.text[1]);
                                         document.getElementById('line1').style.visibility = 'visible';
@@ -30,9 +37,10 @@ $.ajax({
                                         document.getElementById('star').style.visibility = 'visible';
                                         for (let i = 0; i < element.images.length; i++) {
                                             const image = element.images[i];
+                                            document.getElementById("img" + i.toString()).style.visibility= 'visible';
                                             $("#img" + i).attr("src", image);
                                         }
-                                    });
+                                        break;
                                 }
                             }
                         }
