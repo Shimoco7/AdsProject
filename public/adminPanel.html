@@ -136,16 +136,7 @@ td{
   </div>
 </div>
 </body>
-<script src="js/adminPanel.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io();
-  socket.on('UpdateOnDatabaseActive', function (data) {
-        updateAdminPanelActive(data);
-    });
-  socket.on('UpdateOnDatabaseInActive', function (data) {
-        updateAdminPanelInActive(data);
-  });
-</script>
+<script src="js/adminPanel.js"></script>
 </html>
 

@@ -1,3 +1,20 @@
+const socket = io();
+socket.on('UpdateOnDatabaseActive', function (data) {
+      updateAdminPanelActive(data);
+  });
+socket.on('UpdateOnDatabaseInActive', function (data) {
+      updateAdminPanelInActive(data);
+});
+socket.on('refresh0', function (data) {
+  location.reload();
+});
+socket.on('refresh1', function (data) {
+  location.reload();
+});
+socket.on('refresh2', function (data) {
+  location.reload();
+});
+
 var arr = ["Ads", "ActiveUsers", "InActiveUsers"];
 for (var i = 0; i < arr.length; i++) {
   $.ajax({
@@ -13,11 +30,7 @@ for (var i = 0; i < arr.length; i++) {
       for (var k = 0; k < rowsLen; k++) {
         const element = json[1][k];
         var row = table.insertRow(-1);
-        row.setAttribute(
-          json[0],
-          element[Object.keys(element)[1]].toLowerCase(),
-          0
-        );
+        row.setAttribute(json[0],element[Object.keys(element)[1]].toLowerCase(),0);
         for (var j = 0; j < colsLen; j++) {
           var firstRowKey = firstRow.cells[j].innerHTML;
           var cell = row.insertCell(j);
@@ -78,7 +91,7 @@ $("#updateAdminForm").submit(function (event) {
   var passwordConfirmation = $("#confirm_password").val();
   var newUsername = $("#username").val();
   if (newPassword !== passwordConfirmation) {
-    alert("Error; Password and Confirmation inputs are not equal");
+    alert("Error!\nPassword and Confirmation inputs are not equal");
     return false;
   }
   if (
@@ -89,7 +102,7 @@ $("#updateAdminForm").submit(function (event) {
     !regularExpression.test(newPassword)
   ) {
     alert(
-      "Error; Username must be between 5-15 characters\nPassword must be between 5-15 characters\nPassword must contain at least one number\nPassword must contain at least one special character[!@#$%^&*]"
+      "Error!\nUsername must be between 5-15 characters\nPassword must be between 5-15 characters\nPassword must contain at least one number\nPassword must contain at least one special character[!@#$%^&*]"
     );
     return false;
   }
@@ -118,6 +131,9 @@ $("#updateAdminForm").submit(function (event) {
         }, 5 * 1000);
       } else if (res === "No Data Changed") {
         alert("This username and password are already updated");
+      }
+      else{
+        $('html').html(res);
       }
     },
     error: function (error) {
@@ -212,6 +228,7 @@ function deleteAd() {
       if (res === "No advertisement has been deleted") alert(res);
       else {
         findByAttributeValue("Ads", adName.toLowerCase(), "tr").remove();
+        adsChanged(JSON.parse(res));
       }
     },
     error: function (error) {},
@@ -321,6 +338,8 @@ function addAd() {
         location.reload();
         return;
       }
+      console.log(newAd.types);
+      adsChanged(newAd.types);
       var counter = 0;
       var table = document.getElementById("Ads");
       var row = table.insertRow(-1);
@@ -433,6 +452,7 @@ function saveChangesToDB(editedAdForDB) {
         location.reload();
         return;
       }
+      socket.emit('adsChanged');
       var json = JSON.parse(res);
       var name = json["name"];
       var table = document.getElementById("Ads");
@@ -442,6 +462,7 @@ function saveChangesToDB(editedAdForDB) {
       for (var i = 1; i < colsLen; i++) {
         row.children[i].children[0].value = json[Object.keys(json)[i]];
       }
+      adsChanged(['0','1','2']);
     },
     error: function (error) {
       console.log(error);
@@ -805,4 +826,11 @@ function formatToList(input) {
   var text = input + "";
   var inputFormated = text.split(",");
   return inputFormated;
+}
+
+function adsChanged(typesList){
+  for(var i=0; i< typesList.length;i++){
+    var type = 'adsChanged' + typesList[i];
+    socket.emit(type);
+  }
 }

@@ -12,6 +12,8 @@ $('#loginForm').submit(function (event){
         success: function(res){
             if(res==="Username or Password are incorrect"){
                 $('#result').text(res);
+                $('#username').val("");
+                $('#password').val("");
                 setTimeout(()=>{
                     $('#result').text("");
                 },5*1000);

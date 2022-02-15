@@ -14,8 +14,13 @@ $.ajax({
             for (let index = 0; index < ads.length; index++) {
                 curDate = new Date();
                 const element = ads[index];
-                var from = new Date(element.FromDate).getDate();
-                var to = new Date(element.ToDate).getDate();
+                var from = new Date(element.FromDate);
+                var to = new Date(element.ToDate);
+                if(from.getTime()==to.getTime()){
+                    to.setDate(to.getDate()+1);
+                }
+                from = from.getTime();
+                to = to.getTime();
                 var adTitle = $("#adTitle");
                 var adDetails = $("#adDetails");
                 adTitle.text("");
@@ -26,7 +31,7 @@ $.ajax({
                 for (let i = 0; i < 6; i++) {
                     document.getElementById("img" + i.toString()).style.visibility="hidden";
                 }
-                    if (curDate.getDate() >= from && curDate.getDate() <= to) {
+                    if (curDate.getTime() >= from && curDate.getTime() <= to) {
                         if (element.Days.includes(curDate.getDay())) {
                             if (element.Hours.includes(curDate.getHours())) {
                                 if (element.secondsOfAd.includes(curDate.getSeconds() % 10)) {

@@ -6,7 +6,6 @@ const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const http = require('http');
 const { Server } = require('socket.io');
-const { location } = require('express/lib/response');
 const url = 'mongodb://127.0.0.1:27017';
 const port = 8082;
 const app = express();
@@ -177,12 +176,19 @@ app.get('/getActiveUsers',function(req,res){
 app.post('/DeleteAd',function(req,res){
   db.collection('AdminUser').findOne({session:req.sessionID},(err,result)=>{
     if(result){
-      db.collection('Ads').deleteOne({ name: RegExp(req.body.name, 'i')},(err,result)=>{
-        if(result.deletedCount==0)
-          res.send("No advertisment has been deleted");
-        else{
-          res.send("advertisment has been deleted successfully");
+      var types;
+      var query = { name: RegExp(req.body.name, 'i')};
+      db.collection('Ads').findOne(query,(err,r)=>{
+        if(r){
+          types = r.types;;
         }
+      });
+      db.collection('Ads').deleteOne(query,(err,result)=>{
+          if(result.deletedCount==0)
+            res.send("No advertisment has been deleted");
+          else{
+            res.send(types);
+          }
         });
     }
     else{
@@ -289,6 +295,15 @@ io.on('connection', (socket) => {
     socket.on('disconnect',function(res){
       console.log("An admin has been disconnected");
     });
+    socket.on('adsChanged0',(s)=>{
+      io.emit('refresh0');
+    });
+    socket.on('adsChanged1',(s)=>{
+      io.emit('refresh1');
+    });
+    socket.on('adsChanged2',(s)=>{
+      io.emit('refresh2');
+    });
   }
   else{
     str = str.split('screen=')[1];
@@ -320,3 +335,4 @@ io.on('connection', (socket) => {
     });
   }
 });
+
