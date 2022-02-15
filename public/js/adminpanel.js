@@ -338,7 +338,6 @@ function addAd() {
         location.reload();
         return;
       }
-      console.log(newAd.types);
       adsChanged(newAd.types);
       var counter = 0;
       var table = document.getElementById("Ads");
@@ -452,7 +451,6 @@ function saveChangesToDB(editedAdForDB) {
         location.reload();
         return;
       }
-      socket.emit('adsChanged');
       var json = JSON.parse(res);
       var name = json["name"];
       var table = document.getElementById("Ads");
