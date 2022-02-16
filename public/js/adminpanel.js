@@ -595,15 +595,14 @@ function validateDate(date) {
 function validateFromDate(fromDate) {
   var curDate = new Date();
   var fromDateObj = new Date(fromDate);
+  var dd, mm, yyyy;
+  yyyy = curDate.getFullYear();
+  dd = String(curDate.getDate());
+  mm = String(curDate.getMonth() + 1);
+  if (dd.length == 1) dd = String(curDate.getDate()).padStart(2, "0");
+  if (mm.length == 1) mm = String(curDate.getMonth() + 1).padStart(2, "0");
   if (curDate.getTime() > fromDateObj.getTime()) {
-    return (
-      curDate.getMonth() +
-      1 +
-      "/" +
-      curDate.getDate() +
-      "/" +
-      curDate.getFullYear()
-    );
+    return mm + "/" + dd + "/" + yyyy;
   }
   return fromDate;
 }
