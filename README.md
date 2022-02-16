@@ -33,5 +33,5 @@ In this project our team built an advertisement display server includes:
 3. Run the command node .\server.js **or** run the run.bat file.
 4. Click on the link to the server.
 5. in order to enter the **Admin Panel** in the localhost:8082 navigate to localhost:8082/admin.
-6. Username: admin , Password:123456!
+6. Username: admin , Password:123456! (Temporary username and password, then it will be possible to change them on the admin panel).
 7. **Enjoy!**
