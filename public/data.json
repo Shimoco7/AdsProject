@@ -62,7 +62,7 @@
     {
         "name": "shavuot",
         "text":
-            ["Happy Shavuot", "Milk,Cheese and Pizza"]
+            ["Happy Shavuot", "Milk and Pizza"]
         ,
         "images": ["assets/img/holidays/shavuot.jpg", "assets/img/holidays/shavuot-1.jpg", "assets/img/holidays/shavuot-2.jpg",
             "assets/img/holidays/shavuot-3.jpg", "assets/img/holidays/shavuot-4.jpg", "assets/img/holidays/shavuot-5.jpg"]
