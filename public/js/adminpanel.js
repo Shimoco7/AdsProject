@@ -1,17 +1,17 @@
 const socket = io();
-socket.on('UpdateOnDatabaseActive', function (data) {
-      updateAdminPanelActive(data);
-  });
-socket.on('UpdateOnDatabaseInActive', function (data) {
-      updateAdminPanelInActive(data);
+socket.on("UpdateOnDatabaseActive", function (data) {
+  updateAdminPanelActive(data);
 });
-socket.on('refresh0', function (data) {
+socket.on("UpdateOnDatabaseInActive", function (data) {
+  updateAdminPanelInActive(data);
+});
+socket.on("refresh0", function (data) {
   location.reload();
 });
-socket.on('refresh1', function (data) {
+socket.on("refresh1", function (data) {
   location.reload();
 });
-socket.on('refresh2', function (data) {
+socket.on("refresh2", function (data) {
   location.reload();
 });
 
@@ -30,7 +30,11 @@ for (var i = 0; i < arr.length; i++) {
       for (var k = 0; k < rowsLen; k++) {
         const element = json[1][k];
         var row = table.insertRow(-1);
-        row.setAttribute(json[0],element[Object.keys(element)[1]].toLowerCase(),0);
+        row.setAttribute(
+          json[0],
+          element[Object.keys(element)[1]].toLowerCase(),
+          0
+        );
         for (var j = 0; j < colsLen; j++) {
           var firstRowKey = firstRow.cells[j].innerHTML;
           var cell = row.insertCell(j);
@@ -131,9 +135,8 @@ $("#updateAdminForm").submit(function (event) {
         }, 5 * 1000);
       } else if (res === "No Data Changed") {
         alert("This username and password are already updated");
-      }
-      else{
-        $('html').html(res);
+      } else {
+        $("html").html(res);
       }
     },
     error: function (error) {
@@ -252,15 +255,6 @@ function addAd() {
     }
   }
 
-  while (!validateImages(images)) {
-    var images = prompt(
-      "Please enter the advertisement images as a valid URL (separated by a comma(,) , Exactly 6):"
-    );
-    if (images == null) {
-      return;
-    }
-  }
-
   while (!validateDate(fromDate)) {
     var fromDate = prompt(
       "Please enter the advertisement start date ( For Example: MM/DD/YYYY):"
@@ -319,7 +313,7 @@ function addAd() {
   newAd = {
     name: name.toLowerCase(),
     text: formatToList(text),
-    images: formatToList(images),
+    images: null,
     FromDate: fromDate,
     ToDate: validateToDate(fromDate, toDate),
     Days: sortAndUnique(validateAllDays(days)),
@@ -362,6 +356,9 @@ function addAd() {
       console.log(error);
     },
   });
+  alert(
+    "To insert advertisements images press edit an Ad and insert as a valid URL (separated by a comma(,) , Exactly 6 "
+  );
 }
 
 var oldAd;
@@ -460,7 +457,7 @@ function saveChangesToDB(editedAdForDB) {
       for (var i = 1; i < colsLen; i++) {
         row.children[i].children[0].value = json[Object.keys(json)[i]];
       }
-      adsChanged(['0','1','2']);
+      adsChanged(["0", "1", "2"]);
     },
     error: function (error) {
       console.log(error);
@@ -587,7 +584,7 @@ function validateDate(date) {
   if (!isNullOrEmptyField(date)) {
     return false;
   }
-  var date_regex = /^(1[0-2]|0[1-9])\/(3[01]|[12][0-9]|0[1-9])\/[0-9]{4}$/ ;
+  var date_regex = /^(1[0-2]|0[1-9])\/(3[01]|[12][0-9]|0[1-9])\/[0-9]{4}$/;
   if (!date_regex.test(date)) {
     alert("Error; Enter a valid datetime format (MM/DD/YYYY)");
     return false;
@@ -826,9 +823,9 @@ function formatToList(input) {
   return inputFormated;
 }
 
-function adsChanged(typesList){
-  for(var i=0; i< typesList.length;i++){
-    var type = 'adsChanged' + typesList[i];
+function adsChanged(typesList) {
+  for (var i = 0; i < typesList.length; i++) {
+    var type = "adsChanged" + typesList[i];
     socket.emit(type);
   }
 }
